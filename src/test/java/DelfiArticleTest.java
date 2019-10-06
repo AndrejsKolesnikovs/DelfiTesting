@@ -1,3 +1,5 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -16,6 +18,7 @@ public class DelfiArticleTest {
     private final By COMMENTS_ANON = By.xpath(".//li[@class = 'as-link show-anon']/span/span");
     private final By COMMENTS_REG = By.xpath(".//li[@class = 'as-link is-active show-reg']/span/span");
     private final By TOTAL_ARTICLE_COMMENTS = By.xpath(".//a[@class = 'text-size-19 text-size-md-28 text-red-ribbon d-print-none']");
+    private final Logger LOGGGER = LogManager.getLogger(DelfiArticleTest.class);
 
     int totalArticleCommentsParsed;
     int commentAnonToParse;
@@ -27,21 +30,22 @@ public class DelfiArticleTest {
 
     @Test
     public void titleAndCommentsTest() {
-        //Set driver path
+        LOGGGER.info("Set driver path");
+
         System.setProperty("webdriver.chrome.driver", "C:/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         //driver.manage().window().maximize();
 
-        //Open Delfi Home Page
+        LOGGGER.info("Open Delfi Home Page");
         driver.get("http://rus.delfi.lv");
 
-        //Find 1st article
+        LOGGGER.info("Find 1st article");
         WebElement article = driver.findElements(ARTICLE).get(1);
 
-        //Find 1st article title
+        LOGGGER.info("Find 1st article title");
         WebElement homePageTitle = article.findElement(HOME_PAGE_TITLE);
 
-        //Save to string
+        LOGGGER.info("Save to string");
         String titleToCompare = homePageTitle.getText().trim(); //replace("  ", "");
         titleToCompare = titleToCompare.substring(0, titleToCompare.length() - 0);
 
