@@ -34,7 +34,6 @@ public class DelfiArticleTest {
 
         System.setProperty("webdriver.chrome.driver", "C:/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
-        //driver.manage().window().maximize();
 
         LOGGGER.info("Open Delfi Home Page");
         driver.get("http://rus.delfi.lv");
@@ -49,48 +48,37 @@ public class DelfiArticleTest {
         String titleToCompare = homePageTitle.getText().trim(); //replace("  ", "");
         titleToCompare = titleToCompare.substring(0, titleToCompare.length() - 0);
 
-        //Find comments count
         Integer commentsToCompare = 0;
 
-        if (!article.findElements(HOME_PAGE_COMMENTS).isEmpty()) { // ! не пустой ли список
+        if (!article.findElements(HOME_PAGE_COMMENTS).isEmpty()) {
 
             WebElement homePageComments = article.findElement(HOME_PAGE_COMMENTS);
 
-            //Save to Integer
-            String commentsToParse = homePageComments.getText(); //(1)
+            String commentsToParse = homePageComments.getText();
             commentsToParse = commentsToParse.substring(1, commentsToParse.length() - 1);
-            commentsToCompare = Integer.valueOf(commentsToParse); //переделывает стринг в интеджер и подает в левую часть
+            commentsToCompare = Integer.valueOf(commentsToParse);
         }
 
-        //Open Article page
         homePageTitle.click();
 
-        //Find Title
         String apTitle = driver.findElement(ARTICLE_PAGE_TITLE).getText().trim();
 
-        //Check Title
         Assertions.assertEquals(titleToCompare, apTitle, "Wrong title on article page!");
 
-        //Find comments count
         Integer apComments = Integer.valueOf(driver.findElement(ARTICLE_PAGE_COMMENTS).getText()
                 .substring(1, driver.findElement(ARTICLE_PAGE_COMMENTS).getText().length() - 1));
 
-        //Check comment count
         Assertions.assertEquals(commentsToCompare, apComments, "Comments count is not same as on Home Page!");
 
         String totalArticleComments = driver.findElement(TOTAL_ARTICLE_COMMENTS).getText();
         totalArticleCommentsParsed = Integer.parseInt(totalArticleComments.substring(1, totalArticleComments.length() -1));
 
-        //Open comments page
         driver.findElement(ARTICLE_PAGE_COMMENTS).click();
 
-        //Find title
         String cpTitle = driver.findElement(COMMENT_PAGE_TITLE).getText().trim();
 
-        //Check title
         Assertions.assertEquals(titleToCompare, cpTitle, "cpTitle not compare!");
 
-        //Get comment count
 
         if (!driver.findElements(COMMENTS_ANON).isEmpty()) {
             String commentCountAnon = driver.findElement(COMMENTS_ANON).getText();
@@ -104,10 +92,8 @@ public class DelfiArticleTest {
 
         totalCommentCount = commentAnonToParse + commentRegToParse;
 
-        //Check comment count
         Assertions.assertEquals(totalArticleCommentsParsed, totalCommentCount, "Error");
 
-        //Close browser
         driver.quit();
 
     }
